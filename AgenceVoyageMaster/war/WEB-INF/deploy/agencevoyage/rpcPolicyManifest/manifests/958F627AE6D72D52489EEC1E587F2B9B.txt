@@ -1,0 +1,2 @@
+serviceClass: m2tiil.agence.voyage.client.GreetingService
+path: 149E456468EBD266E33696EBE23AB4B0.gwt.rpc

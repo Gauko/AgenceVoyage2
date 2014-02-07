@@ -1,10 +1,14 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-    xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<g:HorizontalPanel>
-		<g:Label text="Nom d'utilisateur" ui:field='login'/>
-		<g:TextBox ui:field='loginName' />
-		<g:Label text="Mot de passe" ui:field='password'/>
-		<g:PasswordTextBox ui:field='paswd' />
-		<g:Button text="Valider" ui:field='connect' />
-	</g:HorizontalPanel>
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:FlowPanel>
+		<g:HorizontalPanel>
+			<g:Label text="Nom d'utilisateur" ui:field='login' />
+			<g:TextBox ui:field='loginName' />
+		</g:HorizontalPanel>
+		<g:HorizontalPanel>
+			<g:Label text="Mot de passe" ui:field='password' />
+			<g:PasswordTextBox ui:field='paswd' />
+			<g:Button text="Valider" ui:field='connect' />
+		</g:HorizontalPanel>
+	</g:FlowPanel>
 </ui:UiBinder>
