@@ -1,6 +1,6 @@
 package m2tiil.agence.voyage.server.bdd;
 
-import m2tiil.agence.voyage.server.bdd.pojo.Offre;
+import m2tiil.agence.voyage.shared.bdd.pojo.Offre;
 
 
 public class TestSessionFactory {

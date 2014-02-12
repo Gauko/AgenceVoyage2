@@ -1,11 +1,25 @@
 package m2tiil.agence.voyage.server;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 
 import m2tiil.agence.voyage.client.GreetingService;
+import m2tiil.agence.voyage.server.bdd.dao.MoyenDeTransportDAO;
+import m2tiil.agence.voyage.server.bdd.dao.OffreDAO;
+import m2tiil.agence.voyage.server.bdd.dao.ReservationDAO;
+import m2tiil.agence.voyage.server.bdd.dao.SocieteDAO;
+import m2tiil.agence.voyage.server.bdd.dao.TrajetDAO;
+import m2tiil.agence.voyage.server.bdd.dao.TypeDAO;
+import m2tiil.agence.voyage.server.bdd.dao.UtilisateurDAO;
+import m2tiil.agence.voyage.server.bdd.dao.VilleDAO;
 import m2tiil.agence.voyage.shared.ConnectionException;
 import m2tiil.agence.voyage.shared.FieldVerifier;
+import m2tiil.agence.voyage.shared.bdd.pojo.Offre;
+import m2tiil.agence.voyage.shared.bdd.pojo.Type;
+import m2tiil.agence.voyage.shared.bdd.pojo.Utilisateur;
 
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -17,6 +31,38 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
+	
+	UtilisateurDAO userDao = new UtilisateurDAO();
+	TypeDAO typeDao = new TypeDAO();
+	MoyenDeTransportDAO moyenDeTransportDao = new MoyenDeTransportDAO();
+	OffreDAO offreDao = new OffreDAO();
+	ReservationDAO reservationDao = new ReservationDAO();
+	SocieteDAO societeDao = new SocieteDAO();
+	TrajetDAO trajetDao = new TrajetDAO();
+	VilleDAO villeDao = new VilleDAO();
+	
+	
+	
+	HashMap<String,List<String>> listCriteres = new HashMap<String,List<String>>();
+	{
+		//listCriteres.put("", arg1)
+		
+		//date aller, < > =
+		//date retour, < > =
+		//prix, < > =,
+		//prix (compris entre x et y)
+		//type, & | =
+		//ville depart,
+		//ville arrivé,
+		//
+		
+	}
+	
+	
+	
+	
+	
+	
 	public String greetServer(String input) throws IllegalArgumentException {
 		// Verify that the input is valid. 
 		if (!FieldVerifier.isValidName(input)) {
@@ -78,11 +124,30 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	
 	
 	//// interface
-	public String login(String userName, String password) throws ConnectionException{
+	public String login(String userMail, String password) throws ConnectionException{
 		String token = "defaultToken";
 		int i = 0;
 		
 		// check user et password
+		List<Utilisateur> listU = userDao.selectAll();
+		Utilisateur user = null;
+		for(Utilisateur u : listU){
+			if(u.getMail().equals(userMail)){
+				user = u;
+				break;
+			}
+		}
+		
+		if(user == null){
+			// pas d'utilisateur correspondant
+			throw new ConnectionException("Mauvais identifiant");
+		}else if(!user.getPassword().equals(password)){
+			// mauvais mot de pass
+			throw new ConnectionException("Mauvais identifiant");
+		}
+		
+		
+		//
 		
 		do{
 			token = "" + Random.nextInt();
@@ -97,33 +162,53 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
-	public void registerNewUser(String user, String password, String email){
+	public void registerNewUser(String nom, String prenom, String password, String mail) throws Exception{
+		Utilisateur user = new Utilisateur();
+		user.setMail(mail);
+		user.setNom(nom);
+		user.setPrenom(prenom);
+		user.setPassword(password);
+		
+		//check doublon
+		for(Utilisateur u : userDao.selectAll()){
+			if(u.getMail().equals(user.getMail())){
+				throw new Exception("This email is already used !");
+			}
+		}
+		
+		userDao.save(user);
 		
 	}
 	
-	public Object getTypeTransport(String token) throws ConnectionException{
+	public List<Type> getTypeTransport(String token) throws ConnectionException{
+		verifToken(token);
+		
+		List<Type> l = typeDao.selectAll();
+		
+		return l;
+	}
+	
+	
+	public HashMap<String,String> getCritere(String token) throws ConnectionException{
 		verifToken(token);
 		
 		
 		return null;
 	}
 	
-	
-	public Object getCritere(String token) throws ConnectionException{
+	public List<Offre> getOffreDuJour(String token) throws ConnectionException{
 		verifToken(token);
 		
+		List<Offre> l = offreDao.selectAll();
+		List<Offre> l2 = new ArrayList<Offre>();
+		for(Offre o : l){
+			//if(o.getDate() == datedujour)
+		}
 		
 		return null;
 	}
 	
-	public Object getOffreDuJour(String token) throws ConnectionException{
-		verifToken(token);
-		
-		
-		return null;
-	}
-	
-	public Object rechercheOffre(String token) throws ConnectionException{
+	public List<Offre> rechercheOffre(String token, HashMap<String,String> critereValeur) throws ConnectionException{
 		verifToken(token);
 		
 		

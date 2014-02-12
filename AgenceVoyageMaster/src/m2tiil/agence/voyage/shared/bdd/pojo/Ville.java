@@ -1,9 +1,9 @@
-package m2tiil.agence.voyage.server.bdd.pojo;
+package m2tiil.agence.voyage.shared.bdd.pojo;
 
 import javax.persistence.*;
 
 @Entity
-public class Societe 
+public class Ville 
 {
 	@Id @GeneratedValue 
 	@Column(name="id")

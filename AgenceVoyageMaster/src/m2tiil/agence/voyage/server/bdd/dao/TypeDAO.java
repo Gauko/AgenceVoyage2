@@ -3,7 +3,7 @@ package m2tiil.agence.voyage.server.bdd.dao;
 import java.util.*;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
-import m2tiil.agence.voyage.server.bdd.pojo.Type;
+import m2tiil.agence.voyage.shared.bdd.pojo.Type;
 
 import org.hibernate.*;
 

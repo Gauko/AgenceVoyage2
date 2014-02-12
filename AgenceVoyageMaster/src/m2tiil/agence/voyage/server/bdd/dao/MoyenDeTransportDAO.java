@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
-import m2tiil.agence.voyage.server.bdd.pojo.MoyenDeTransport;
+import m2tiil.agence.voyage.shared.bdd.pojo.MoyenDeTransport;
 
 import org.hibernate.Query;
 import org.hibernate.Session;

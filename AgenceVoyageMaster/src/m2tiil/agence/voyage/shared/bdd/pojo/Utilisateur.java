@@ -1,4 +1,4 @@
-package m2tiil.agence.voyage.server.bdd.pojo;
+package m2tiil.agence.voyage.shared.bdd.pojo;
 
 import javax.persistence.*;
 
@@ -17,6 +17,9 @@ public class Utilisateur
 	
 	@Column(name="mail")
 	private String mail;
+	
+	@Column(name="password")
+	private String password;
 
 	public int getId() {
 		return id;
@@ -48,6 +51,14 @@ public class Utilisateur
 
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 }
