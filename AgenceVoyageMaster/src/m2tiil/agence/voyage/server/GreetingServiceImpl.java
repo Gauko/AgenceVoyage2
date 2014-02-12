@@ -45,7 +45,16 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	
 	HashMap<String,List<String>> listCriteres = new HashMap<String,List<String>>();
 	{
-		//listCriteres.put("", arg1)
+		listCriteres.put("date aller", new ArrayList<String>());
+		listCriteres.get("date aller").add("<");
+		listCriteres.get("date aller").add(">");
+		listCriteres.get("date aller").add("=");
+		
+		listCriteres.put("date retour", new ArrayList<String>());
+		listCriteres.get("date retour").add("<");
+		listCriteres.get("date retour").add(">");
+		listCriteres.get("date retour").add("=");
+		
 		
 		//date aller, < > =
 		//date retour, < > =
