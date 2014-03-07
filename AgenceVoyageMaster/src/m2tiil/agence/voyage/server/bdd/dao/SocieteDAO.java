@@ -15,7 +15,7 @@ public class SocieteDAO
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("select new agencevoyage.pojo.Societe(s.id,s.nom) from Societe s");
+		Query select = s.createQuery("select new "+HibernateUtil.locatePojo+".Societe(s.id,s.nom) from Societe s");
 		
 		ArrayList<Societe> Societes = new ArrayList<Societe>();
 		

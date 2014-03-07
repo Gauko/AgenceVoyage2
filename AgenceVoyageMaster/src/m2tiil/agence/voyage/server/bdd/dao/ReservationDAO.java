@@ -15,7 +15,7 @@ public class ReservationDAO
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("select new agencevoyage.pojo.Reservation(r.id,r.idUtilisateur, r.idOffre) from Reservation r");
+		Query select = s.createQuery("select new "+HibernateUtil.locatePojo+".Reservation(r.id,r.idUtilisateur, r.idOffre) from Reservation r");
 		
 		ArrayList<Reservation> Reservations = new ArrayList<Reservation>();
 		

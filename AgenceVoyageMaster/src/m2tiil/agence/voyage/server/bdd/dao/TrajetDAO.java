@@ -15,7 +15,7 @@ public class TrajetDAO
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("select new agencevoyage.pojo.Trajet(t.id, t.date, t.idDepart,t.idArrivee, t.idMoyenTransport) from Trajet t");
+		Query select = s.createQuery("select new "+HibernateUtil.locatePojo+".Trajet(t.id, t.date, t.idDepart,t.idArrivee, t.idMoyenTransport) from Trajet t");
 		
 		ArrayList<Trajet> Trajets = new ArrayList<Trajet>();
 		

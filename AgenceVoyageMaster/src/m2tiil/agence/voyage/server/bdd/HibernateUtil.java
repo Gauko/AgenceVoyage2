@@ -10,6 +10,7 @@ public class HibernateUtil
 {
     private static SessionFactory sessionFactory;
     private static ServiceRegistry serviceRegistry;
+    public static String locatePojo = "m2tiil.agence.voyage.shared.bdd.pojo";
 
     static {
         try {

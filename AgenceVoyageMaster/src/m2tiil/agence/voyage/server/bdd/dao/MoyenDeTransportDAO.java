@@ -15,7 +15,7 @@ public class MoyenDeTransportDAO
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("select new agencevoyage.pojo.MoyenDeTransport(m.id,m.nom,m.type,m.societe) from MoyenDeTransport m");
+		Query select = s.createQuery("select new "+HibernateUtil.locatePojo+".MoyenDeTransport(m.id,m.nom,m.type,m.societe) from MoyenDeTransport m");
 		
 		ArrayList<MoyenDeTransport> MoyenDeTransports = new ArrayList<MoyenDeTransport>();
 		

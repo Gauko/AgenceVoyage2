@@ -15,7 +15,7 @@ public class OffreDAO
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("select new agencevoyage.pojo.Offre(o.id,o.libelle,o.prix,o.placesTotales,o.placesDisponibles,o.idTrajet) from Offre o");
+		Query select = s.createQuery("select new "+HibernateUtil.locatePojo+".Offre(o.id,o.libelle,o.prix,o.placesTotales,o.placesDisponibles,o.idTrajet) from Offre o");
 		
 		ArrayList<Offre> offres = new ArrayList<Offre>();
 		
