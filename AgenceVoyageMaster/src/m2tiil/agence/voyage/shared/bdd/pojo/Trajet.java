@@ -14,17 +14,34 @@ public class Trajet
 	@Column(name="date")
 	private Date date;
 	
-	@OneToMany
+	//@OneToMany
 	@JoinColumn(name="idDepart")
-	private Ville villeDepart;
+	private int idDepart;
+	//private Ville villeDepart;
 	
-	@OneToMany
+	//@OneToMany
 	@JoinColumn(name="idArrivee")
-	private Ville villeArrivee;
+	private int idArrivee;
+	//private Ville villeArrivee;
 	
-	@OneToMany
+	//@OneToMany
 	@JoinColumn(name="idMoyenTransport")
-	private MoyenDeTransport moyen;
+	private int idMoyenTransport;
+	//private MoyenDeTransport moyen;
+
+	public Trajet(int id, Date date, int idDepart, int idArrivee,
+			int idMoyenTransport) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.idDepart = idDepart;
+		this.idArrivee = idArrivee;
+		this.idMoyenTransport = idMoyenTransport;
+	}
+	
+	public Trajet() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -42,28 +59,32 @@ public class Trajet
 		this.date = date;
 	}
 
-	public Ville getVilleDepart() {
-		return villeDepart;
+	public int getIdDepart() {
+		return idDepart;
 	}
 
-	public void setVilleDepart(Ville villeDepart) {
-		this.villeDepart = villeDepart;
+	public void setIdDepart(int idDepart) {
+		this.idDepart = idDepart;
 	}
 
-	public Ville getVilleArrivee() {
-		return villeArrivee;
+	public int getIdArrivee() {
+		return idArrivee;
 	}
 
-	public void setVilleArrivee(Ville villeArrivee) {
-		this.villeArrivee = villeArrivee;
+	public void setIdArrivee(int idArrivee) {
+		this.idArrivee = idArrivee;
 	}
 
-	public MoyenDeTransport getMoyen() {
-		return moyen;
+	public int getIdMoyenTransport() {
+		return idMoyenTransport;
 	}
 
-	public void setMoyen(MoyenDeTransport moyen) {
-		this.moyen = moyen;
+	public void setIdMoyenTransport(int idMoyenTransport) {
+		this.idMoyenTransport = idMoyenTransport;
 	}
-	
+
+	public String toString()
+	{
+		return "Trajet - id : "+id+" date : "+date+" depart : "+idDepart+" arrivee : "+idArrivee+" moyen : "+idMoyenTransport;
+	}
 }

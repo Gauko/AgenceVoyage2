@@ -1,41 +1,41 @@
 package m2tiil.agence.voyage.server.bdd.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import org.hibernate.*;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
 import m2tiil.agence.voyage.shared.bdd.pojo.Offre;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 public class OffreDAO 
 {
 	
-	public ArrayList<Offre> selectAll()
+	public static ArrayList<Offre> selectAll()
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("from Offre");
+		Query select = s.createQuery("select new agencevoyage.pojo.Offre(o.id,o.libelle,o.prix,o.placesTotales,o.placesDisponibles,o.idTrajet) from Offre o");
 		
 		ArrayList<Offre> offres = new ArrayList<Offre>();
 		
-		List<Offre> res = select.list();
+		//System.out.println(select.list().get(0).getClass().toString());
+		List<?> res = select.list();
 
 		for(int i=0;i<res.size();i++)
 		{
+			Offre a = (Offre)res.get(i);
 			Offre o = new Offre();
-			o.setId(res.get(i).getId());
-			o.setLibelle(res.get(i).getLibelle());
-			o.setPlacesDisponibles(res.get(i).getPlacesDisponibles());
-			o.setPlacesTotales(res.get(i).getPlacesTotales());
-			o.setPrix(res.get(i).getPrix());
-			o.setTrajet(res.get(i).getTrajet());
+			o.setId(a.getId());
+			o.setLibelle(a.getLibelle());
+			o.setPlacesDisponibles(a.getPlacesDisponibles());
+			o.setPlacesTotales(a.getPlacesTotales());
+			o.setPrix(a.getPrix());
+			o.setIdTrajet(a.getIdTrajet());
 			
 			offres.add(o);
+			
+			//System.out.println(o.toString());
 		}
 
 		tx.commit();
@@ -43,7 +43,7 @@ public class OffreDAO
 		return offres;
 	}
 	
-	public Offre findById(int id)
+	public static Offre findById(int id)
 	{
 		ArrayList<Offre> offres = selectAll();
 		Iterator<Offre> i = offres.iterator();
@@ -58,7 +58,7 @@ public class OffreDAO
 		return new Offre();
 	}
 	
-	public boolean delete(Offre o)
+	public static boolean delete(Offre o)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -72,12 +72,12 @@ public class OffreDAO
 		return true;
 	}
 	
-	public boolean save(Offre o)
+	public static boolean save(Offre o)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("insert into Offre(libelle, placesDisponibles, placesTotales, prix, idTrajet) values (\'"+o.getLibelle()+"\',"+o.getPlacesDisponibles()+","+o.getPlacesTotales()+","+o.getPrix()+","+o.getTrajet()+")");
+		Query q = s.createSQLQuery("insert into Offre(libelle, placesDisponibles, placesTotales, prix, idTrajet) values (\'"+o.getLibelle()+"\',"+o.getPlacesDisponibles()+","+o.getPlacesTotales()+","+o.getPrix()+","+o.getIdTrajet()+")");
 		
 		q.executeUpdate();
 		tx.commit();
@@ -86,12 +86,12 @@ public class OffreDAO
 		return true;
 	}
 	
-	public boolean update(Offre origine, Offre modif)
+	public static boolean update(Offre origine, Offre modif)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("update Offre set libelle=\'"+modif.getLibelle()+"\', placesDisponibles="+modif.getPlacesDisponibles()+", placesTotales="+modif.getPlacesTotales()+",prix="+modif.getPrix()+", idTrajet="+modif.getTrajet()+" where id="+origine.getId());
+		Query q = s.createSQLQuery("update Offre set libelle=\'"+modif.getLibelle()+"\', placesDisponibles="+modif.getPlacesDisponibles()+", placesTotales="+modif.getPlacesTotales()+",prix="+modif.getPrix()+", idTrajet="+modif.getIdTrajet()+" where id="+origine.getId());
 		
 		q.executeUpdate();
 		tx.commit();

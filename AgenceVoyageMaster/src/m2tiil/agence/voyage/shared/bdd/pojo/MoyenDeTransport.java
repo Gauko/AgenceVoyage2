@@ -12,14 +12,29 @@ public class MoyenDeTransport
 	@Column(name="nom")
 	private String nom;
 	
-	@ManyToOne
+	//@ManyToOne
 	@JoinColumn(name="type")
-	private Type type;
+	private int type;
+	//private Type type;
 
-	@ManyToOne
+	//@ManyToOne
 	@JoinColumn(name="societe")
-	private Societe societe;
+	private int societe;
+	//private Societe societe;
 	
+	public MoyenDeTransport(int id, String nom, int type, int societe) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.type = type;
+		this.societe = societe;
+	}
+	
+	
+	public MoyenDeTransport() {
+		super();
+	}
+
 
 	public int getId() {
 		return id;
@@ -37,20 +52,24 @@ public class MoyenDeTransport
 		this.nom = nom;
 	}
 
-	public Type getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public void setType(int type) {
 		this.type = type;
 	}
-	
-	public Societe getSociete() {
+
+	public int getSociete() {
 		return societe;
 	}
 
-	public void setSociete(Societe societe) {
+	public void setSociete(int societe) {
 		this.societe = societe;
 	}
-	
+
+	public String toString()
+	{
+		return "MoyenDeTransport - id : "+id+" nom : "+nom+" type : "+type+" societe : "+societe;
+	}
 }

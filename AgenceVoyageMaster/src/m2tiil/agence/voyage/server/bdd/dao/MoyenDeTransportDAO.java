@@ -1,34 +1,34 @@
 package m2tiil.agence.voyage.server.bdd.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import org.hibernate.*;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
 import m2tiil.agence.voyage.shared.bdd.pojo.MoyenDeTransport;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 public class MoyenDeTransportDAO 
 {
 	
-	public ArrayList<MoyenDeTransport> selectAll()
+	public static ArrayList<MoyenDeTransport> selectAll()
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("from MoyenDeTransport");
+		Query select = s.createQuery("select new agencevoyage.pojo.MoyenDeTransport(m.id,m.nom,m.type,m.societe) from MoyenDeTransport m");
 		
 		ArrayList<MoyenDeTransport> MoyenDeTransports = new ArrayList<MoyenDeTransport>();
 		
-		List<MoyenDeTransport> res = select.list();
+		List<?> res = select.list();
 
 		for(int i=0;i<res.size();i++)
 		{
+			MoyenDeTransport a = (MoyenDeTransport)res.get(i);
 			MoyenDeTransport m = new MoyenDeTransport();
-			m.setNom(res.get(i).getNom());
+			m.setId(m.getId());
+			m.setNom(a.getNom());
+			m.setSociete(a.getSociete());
+			m.setType(m.getType());
 
 			
 			MoyenDeTransports.add(m);
@@ -39,7 +39,7 @@ public class MoyenDeTransportDAO
 		return MoyenDeTransports;
 	}
 	
-	public MoyenDeTransport findById(int id)
+	public static MoyenDeTransport findById(int id)
 	{
 		ArrayList<MoyenDeTransport> MoyenDeTransports = selectAll();
 		Iterator<MoyenDeTransport> i = MoyenDeTransports.iterator();
@@ -54,7 +54,7 @@ public class MoyenDeTransportDAO
 		return new MoyenDeTransport();
 	}
 	
-	public boolean delete(MoyenDeTransport m)
+	public static boolean delete(MoyenDeTransport m)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -68,12 +68,12 @@ public class MoyenDeTransportDAO
 		return true;
 	}
 	
-	public boolean save(MoyenDeTransport m)
+	public static boolean save(MoyenDeTransport m)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("insert into MoyenDeTransport(nom) values ("+m.getNom()+")");
+		Query q = s.createSQLQuery("insert into MoyenDeTransport(nom,type,societe) values (\'"+m.getNom()+"\',"+m.getType()+","+m.getSociete()+")");
 		
 		q.executeUpdate();
 		tx.commit();
@@ -82,12 +82,12 @@ public class MoyenDeTransportDAO
 		return true;
 	}
 	
-	public boolean update(MoyenDeTransport origine, MoyenDeTransport modif)
+	public static boolean update(MoyenDeTransport origine, MoyenDeTransport modif)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("update MoyenDeTransport set nom=\'"+modif.getNom()+"\' where id="+origine.getId());
+		Query q = s.createSQLQuery("update MoyenDeTransport set nom=\'"+modif.getNom()+"\', type="+modif.getType()+",societe="+modif.getSociete()+" where id="+origine.getId());
 		
 		q.executeUpdate();
 		tx.commit();

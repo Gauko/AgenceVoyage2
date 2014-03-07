@@ -1,35 +1,33 @@
 package m2tiil.agence.voyage.server.bdd.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import org.hibernate.*;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
 import m2tiil.agence.voyage.shared.bdd.pojo.Reservation;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 public class ReservationDAO 
 {
 	
-	public ArrayList<Reservation> selectAll()
+	public static ArrayList<Reservation> selectAll()
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("from Reservation");
+		Query select = s.createQuery("select new agencevoyage.pojo.Reservation(r.id,r.idUtilisateur, r.idOffre) from Reservation r");
 		
 		ArrayList<Reservation> Reservations = new ArrayList<Reservation>();
 		
-		List<Reservation> res = select.list();
+		List<?> res = select.list();
 
 		for(int i=0;i<res.size();i++)
 		{
+			Reservation a = (Reservation)res.get(i);
 			Reservation r = new Reservation();
-			r.setUtilisateur(res.get(i).getUtilisateur());
-			r.setOffre(res.get(i).getOffre());
+			r.setId(a.getId());
+			r.setIdUtilisateur(a.getIdUtilisateur());
+			r.setIdOffre(a.getIdOffre());
 
 			
 			Reservations.add(r);
@@ -40,7 +38,7 @@ public class ReservationDAO
 		return Reservations;
 	}
 	
-	public Reservation findById(int id)
+	public static Reservation findById(int id)
 	{
 		ArrayList<Reservation> Reservations = selectAll();
 		Iterator<Reservation> i = Reservations.iterator();
@@ -55,7 +53,7 @@ public class ReservationDAO
 		return new Reservation();
 	}
 	
-	public boolean delete(Reservation r)
+	public static boolean delete(Reservation r)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -69,12 +67,12 @@ public class ReservationDAO
 		return true;
 	}
 	
-	public boolean save(Reservation r)
+	public static boolean save(Reservation r)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("insert into Reservation(idUtilisateur, idOffre) values ("+r.getUtilisateur()+","+r.getOffre()+")");
+		Query q = s.createSQLQuery("insert into Reservation(idUtilisateur, idOffre) values ("+r.getIdUtilisateur()+","+r.getIdOffre()+")");
 		
 		q.executeUpdate();
 		tx.commit();
@@ -83,12 +81,12 @@ public class ReservationDAO
 		return true;
 	}
 	
-	public boolean update(Reservation origine, Reservation modif)
+	public static boolean update(Reservation origine, Reservation modif)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("update Reservation set idUtilisateur=\'"+modif.getUtilisateur()+"\', idOffre="+modif.getOffre()+" where id="+origine.getId());
+		Query q = s.createSQLQuery("update Reservation set idUtilisateur=\'"+modif.getIdUtilisateur()+"\', idOffre="+modif.getIdOffre()+" where id="+origine.getId());
 		
 		q.executeUpdate();
 		tx.commit();

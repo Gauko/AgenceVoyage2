@@ -1,34 +1,32 @@
 package m2tiil.agence.voyage.server.bdd.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import org.hibernate.*;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
 import m2tiil.agence.voyage.shared.bdd.pojo.Societe;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 public class SocieteDAO 
 {
 	
-	public ArrayList<Societe> selectAll()
+	public static ArrayList<Societe> selectAll()
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("from Societe");
+		Query select = s.createQuery("select new agencevoyage.pojo.Societe(s.id,s.nom) from Societe s");
 		
 		ArrayList<Societe> Societes = new ArrayList<Societe>();
 		
-		List<Societe> res = select.list();
+		List<?> res = select.list();
 
 		for(int i=0;i<res.size();i++)
 		{
+			Societe a = (Societe)res.get(i);
 			Societe so = new Societe();
-			so.setNom(res.get(i).getNom());
+			so.setId(a.getId());
+			so.setNom(a.getNom());
 
 			
 			Societes.add(so);
@@ -39,7 +37,7 @@ public class SocieteDAO
 		return Societes;
 	}
 	
-	public Societe findById(int id)
+	public static Societe findById(int id)
 	{
 		ArrayList<Societe> Societes = selectAll();
 		Iterator<Societe> i = Societes.iterator();
@@ -54,7 +52,7 @@ public class SocieteDAO
 		return new Societe();
 	}
 	
-	public boolean delete(Societe so)
+	public static boolean delete(Societe so)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -68,12 +66,12 @@ public class SocieteDAO
 		return true;
 	}
 	
-	public boolean save(Societe so)
+	public static boolean save(Societe so)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("insert into Societe(nom) values ("+so.getNom()+")");
+		Query q = s.createSQLQuery("insert into Societe(nom) values (\'"+so.getNom()+"\')");
 		
 		q.executeUpdate();
 		tx.commit();
@@ -82,7 +80,7 @@ public class SocieteDAO
 		return true;
 	}
 	
-	public boolean update(Societe origine, Societe modif)
+	public static boolean update(Societe origine, Societe modif)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();

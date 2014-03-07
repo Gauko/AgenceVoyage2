@@ -1,38 +1,35 @@
 package m2tiil.agence.voyage.server.bdd.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import org.hibernate.*;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
 import m2tiil.agence.voyage.shared.bdd.pojo.Trajet;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 public class TrajetDAO 
 {
 	
-	public ArrayList<Trajet> selectAll()
+	public static ArrayList<Trajet> selectAll()
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("from Trajet");
+		Query select = s.createQuery("select new agencevoyage.pojo.Trajet(t.id, t.date, t.idDepart,t.idArrivee, t.idMoyenTransport) from Trajet t");
 		
 		ArrayList<Trajet> Trajets = new ArrayList<Trajet>();
 		
-		List<Trajet> res = select.list();
+		List<?> res = select.list();
 
 		for(int i=0;i<res.size();i++)
 		{
+			Trajet a = (Trajet)res.get(i);
 			Trajet t = new Trajet();
-			t.setDate(res.get(i).getDate());
-			t.setVilleDepart(res.get(i).getVilleDepart());
-			t.setVilleArrivee(res.get(i).getVilleArrivee());
-			t.setMoyen(res.get(i).getMoyen());
-
+			t.setId(a.getId());
+			t.setDate(a.getDate());
+			t.setIdArrivee(a.getIdArrivee());
+			t.setIdDepart(a.getIdDepart());
+			t.setIdMoyenTransport(a.getIdMoyenTransport());
 			
 			Trajets.add(t);
 		}
@@ -42,7 +39,7 @@ public class TrajetDAO
 		return Trajets;
 	}
 	
-	public Trajet findById(int id)
+	public static Trajet findById(int id)
 	{
 		ArrayList<Trajet> Trajets = selectAll();
 		Iterator<Trajet> i = Trajets.iterator();
@@ -57,7 +54,7 @@ public class TrajetDAO
 		return new Trajet();
 	}
 	
-	public boolean delete(Trajet t)
+	public static boolean delete(Trajet t)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -71,12 +68,12 @@ public class TrajetDAO
 		return true;
 	}
 	
-	public boolean save(Trajet t)
+	public static boolean save(Trajet t)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("insert into Trajet(date, idDepart, idArrivee, idMoyenTransport) values ("+t.getDate()+","+t.getVilleDepart()+","+t.getVilleArrivee()+","+t.getMoyen()+")");
+		Query q = s.createSQLQuery("insert into Trajet(date, idDepart, idArrivee, idMoyenTransport) values ("+t.getDate()+","+t.getIdDepart()+","+t.getIdArrivee()+","+t.getIdMoyenTransport()+")");
 		
 		q.executeUpdate();
 		tx.commit();
@@ -85,12 +82,12 @@ public class TrajetDAO
 		return true;
 	}
 	
-	public boolean update(Trajet origine, Trajet modif)
+	public static boolean update(Trajet origine, Trajet modif)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("update Trajet set date=\'"+modif.getDate()+"\', idDepart="+modif.getVilleDepart()+"\', idArrivee="+modif.getVilleArrivee()+"\', idMoyenTransport="+modif.getMoyen()+" where id="+origine.getId());
+		Query q = s.createSQLQuery("update Trajet set date=\'"+modif.getDate()+"\', idDepart="+modif.getIdDepart()+"\', idArrivee="+modif.getIdArrivee()+"\', idMoyenTransport="+modif.getIdMoyenTransport()+" where id="+origine.getId());
 		
 		q.executeUpdate();
 		tx.commit();

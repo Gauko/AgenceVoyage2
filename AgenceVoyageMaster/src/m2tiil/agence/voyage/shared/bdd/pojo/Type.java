@@ -11,6 +11,16 @@ public class Type
 	
 	@Column(name="libelle")
 	private String libelle;
+	
+	public Type(int id, String libelle) {
+		super();
+		this.id = id;
+		this.libelle = libelle;
+	}
+
+	public Type() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -28,4 +38,8 @@ public class Type
 		this.libelle = libelle;
 	}
 
+	public String toString()
+	{
+		return "Type - id : "+id+" libelle : "+libelle;
+	}
 }

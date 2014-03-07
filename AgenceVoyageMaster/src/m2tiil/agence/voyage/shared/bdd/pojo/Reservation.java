@@ -9,13 +9,26 @@ public class Reservation
 	@Column(name="id")
 	private int id;
 	
-	@ManyToMany
+	//@ManyToMany
 	@JoinColumn(name="idUtilisateur")
-	private Utilisateur utilisateur;
+	private int idUtilisateur;
+	//private Utilisateur utilisateur;
 	
-	@OneToMany
+	//@OneToMany
 	@JoinColumn(name="idOffre")
-	private Offre offre;
+	private int idOffre;
+	//private Offre offre;
+
+		public Reservation(int id, int idUtilisateur, int idOffre) {
+		super();
+		this.id = id;
+		this.idUtilisateur = idUtilisateur;
+		this.idOffre = idOffre;
+	}
+	
+	public Reservation() {
+			super();
+	}
 
 	public int getId() {
 		return id;
@@ -25,21 +38,25 @@ public class Reservation
 		this.id = id;
 	}
 
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
+	public int getIdUtilisateur() {
+		return idUtilisateur;
 	}
 
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
+	public void setIdUtilisateur(int idUtilisateur) {
+		this.idUtilisateur = idUtilisateur;
 	}
 
-	public Offre getOffre() {
-		return offre;
+	public int getIdOffre() {
+		return idOffre;
 	}
 
-	public void setOffre(Offre offre) {
-		this.offre = offre;
+	public void setIdOffre(int idOffre) {
+		this.idOffre = idOffre;
 	}
-	
+
+	public String toString()
+	{
+		return "Reservation - id : "+id+" utilisateur : "+idUtilisateur+" offre : "+idOffre;
+	}
 	
 }

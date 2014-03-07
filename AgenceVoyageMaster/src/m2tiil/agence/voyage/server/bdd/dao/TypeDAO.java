@@ -2,35 +2,34 @@ package m2tiil.agence.voyage.server.bdd.dao;
 
 import java.util.*;
 
-import m2tiil.agence.voyage.server.bdd.HibernateUtil;
-import m2tiil.agence.voyage.shared.bdd.pojo.Type;
-
 import org.hibernate.*;
 
-
-
+import m2tiil.agence.voyage.server.bdd.HibernateUtil;
+import m2tiil.agence.voyage.shared.bdd.pojo.Type;
 
 public class TypeDAO 
 {
 	
-	public ArrayList<Type> selectAll()
+	public static ArrayList<Type> selectAll()
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("from Type");
+		Query select = s.createQuery("select new agencevoyage.pojo.Type(t.id, t.libelle) from Type t");
 		
 		ArrayList<Type> Types = new ArrayList<Type>();
 		
-		List<Type> res = select.list();
+		List<?> res = select.list();
 
 		for(int i=0;i<res.size();i++)
 		{
-			Type v = new Type();
-			v.setLibelle(res.get(i).getLibelle());
+			Type a = (Type)res.get(i);
+			Type t = new Type();
+			t.setId(a.getId());
+			t.setLibelle(a.getLibelle());
 
 			
-			Types.add(v);
+			Types.add(t);
 		}
 
 		tx.commit();
@@ -38,7 +37,7 @@ public class TypeDAO
 		return Types;
 	}
 	
-	public Type findById(int id)
+	public static Type findById(int id)
 	{
 		ArrayList<Type> Types = selectAll();
 		Iterator<Type> i = Types.iterator();
@@ -53,7 +52,7 @@ public class TypeDAO
 		return new Type();
 	}
 	
-	public boolean delete(Type t)
+	public static boolean delete(Type t)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -67,12 +66,12 @@ public class TypeDAO
 		return true;
 	}
 	
-	public boolean save(Type t)
+	public static boolean save(Type t)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("insert into Type(libelle) values ("+t.getLibelle()+")");
+		Query q = s.createSQLQuery("insert into Type(libelle) values (\'"+t.getLibelle()+"\')");
 		
 		q.executeUpdate();
 		tx.commit();
@@ -81,7 +80,7 @@ public class TypeDAO
 		return true;
 	}
 	
-	public boolean update(Type origine, Type modif)
+	public static boolean update(Type origine, Type modif)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();

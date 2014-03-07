@@ -1,34 +1,31 @@
 package m2tiil.agence.voyage.server.bdd.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import org.hibernate.*;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
 import m2tiil.agence.voyage.shared.bdd.pojo.Ville;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 public class VilleDAO 
 {
 	
-	public ArrayList<Ville> selectAll()
+	public static ArrayList<Ville> selectAll()
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("from Ville");
+		Query select = s.createQuery("select new agencevoyage.pojo.Ville(v.id, v.nom) from Ville v");
 		
 		ArrayList<Ville> Villes = new ArrayList<Ville>();
 		
-		List<Ville> res = select.list();
+		List<?> res = select.list();
 
 		for(int i=0;i<res.size();i++)
 		{
+			Ville a = (Ville)res.get(i);
 			Ville v = new Ville();
-			v.setNom(res.get(i).getNom());
+			v.setNom(a.getNom());
 
 			
 			Villes.add(v);
@@ -39,7 +36,7 @@ public class VilleDAO
 		return Villes;
 	}
 	
-	public Ville findById(int id)
+	public static Ville findById(int id)
 	{
 		ArrayList<Ville> Villes = selectAll();
 		Iterator<Ville> i = Villes.iterator();
@@ -54,7 +51,7 @@ public class VilleDAO
 		return new Ville();
 	}
 	
-	public boolean delete(Ville v)
+	public static boolean delete(Ville v)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -68,12 +65,12 @@ public class VilleDAO
 		return true;
 	}
 	
-	public boolean save(Ville v)
+	public static boolean save(Ville v)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("insert into Ville(nom) values ("+v.getNom()+")");
+		Query q = s.createSQLQuery("insert into Ville(nom) values (\'"+v.getNom()+"\')");
 		
 		q.executeUpdate();
 		tx.commit();
@@ -82,7 +79,7 @@ public class VilleDAO
 		return true;
 	}
 	
-	public boolean update(Ville origine, Ville modif)
+	public static boolean update(Ville origine, Ville modif)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();

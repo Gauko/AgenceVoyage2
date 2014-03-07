@@ -1,37 +1,35 @@
 package m2tiil.agence.voyage.server.bdd.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
+import org.hibernate.*;
 
 import m2tiil.agence.voyage.server.bdd.HibernateUtil;
 import m2tiil.agence.voyage.shared.bdd.pojo.Utilisateur;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 public class UtilisateurDAO 
 {
 	
-	public ArrayList<Utilisateur> selectAll()
+	public static ArrayList<Utilisateur> selectAll()
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("from Utilisateur");
+		Query select = s.createQuery("select new agencevoyage.pojo.Utilisateur(u.id, u.nom, u.prenom, u.mail, u.password) from Utilisateur u");
 		
 		ArrayList<Utilisateur> Utilisateurs = new ArrayList<Utilisateur>();
 		
-		List<Utilisateur> res = select.list();
+		List<?> res = select.list();
 
 		for(int i=0;i<res.size();i++)
 		{
+			Utilisateur a = (Utilisateur)res.get(i);
 			Utilisateur u = new Utilisateur();
-			u.setId(res.get(i).getId());
-			u.setNom(res.get(i).getNom());
-			u.setPrenom(res.get(i).getPrenom());
-			u.setMail(res.get(i).getMail());
+			u.setId(a.getId());
+			u.setNom(a.getNom());
+			u.setPassword(a.getPassword());
+			u.setPrenom(a.getPrenom());
+			u.setMail(a.getMail());
 			
 			Utilisateurs.add(u);
 		}
@@ -41,7 +39,7 @@ public class UtilisateurDAO
 		return Utilisateurs;
 	}
 	
-	public Utilisateur findById(int id)
+	public static Utilisateur findById(int id)
 	{
 		ArrayList<Utilisateur> Utilisateurs = selectAll();
 		Iterator<Utilisateur> i = Utilisateurs.iterator();
@@ -56,7 +54,7 @@ public class UtilisateurDAO
 		return new Utilisateur();
 	}
 	
-	public boolean delete(Utilisateur u)
+	public static boolean delete(Utilisateur u)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
@@ -70,12 +68,12 @@ public class UtilisateurDAO
 		return true;
 	}
 	
-	public boolean save(Utilisateur u)
+	public static boolean save(Utilisateur u)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("insert into Utilisateur(nom, prenom, mail) values (\'"+u.getNom()+"\',\'"+u.getPrenom()+"\',\'"+u.getMail()+"\')");
+		Query q = s.createSQLQuery("insert into Utilisateur(nom, prenom, mail, password) values (\'"+u.getNom()+"\',\'"+u.getPrenom()+"\',\'"+u.getMail()+"\',\'"+u.getPassword()+"\')");
 		
 		q.executeUpdate();
 		tx.commit();
@@ -84,12 +82,12 @@ public class UtilisateurDAO
 		return true;
 	}
 	
-	public boolean update(Utilisateur origine, Utilisateur modif)
+	public static boolean update(Utilisateur origine, Utilisateur modif)
 	{
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query q = s.createSQLQuery("update Utilisateur set nom=\'"+modif.getNom()+"\', prenom=\'"+modif.getPrenom()+"\', mail=\'"+modif.getMail()+"\' where id="+origine.getId());
+		Query q = s.createSQLQuery("update Utilisateur set nom=\'"+modif.getNom()+"\', prenom=\'"+modif.getPrenom()+"\', mail=\'"+modif.getMail()+"\', password=\'"+modif.getPassword()+"\' where id="+origine.getId());
 		
 		q.executeUpdate();
 		tx.commit();

@@ -21,9 +21,24 @@ public class Offre
 	@Column(name="placesDisponibles")
 	private int placesDisponibles;
 	
-	@OneToMany
 	@JoinColumn(name="idTrajet")
-	private Trajet trajet;
+	private int idTrajet;
+	//private Trajet trajet;
+	
+	public Offre(int id, String libelle, double prix, int placesTotales,
+			int placesDisponibles, int idTrajet) {
+		super();
+		this.id = id;
+		this.libelle = libelle;
+		this.prix = prix;
+		this.placesTotales = placesTotales;
+		this.placesDisponibles = placesDisponibles;
+		this.idTrajet = idTrajet;
+	}
+	
+	public Offre() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -65,12 +80,17 @@ public class Offre
 		this.placesDisponibles = placesDisponibles;
 	}
 
-	public Trajet getTrajet() {
-		return trajet;
+	public int getIdTrajet() {
+		return idTrajet;
 	}
 
-	public void setTrajet(Trajet trajet) {
-		this.trajet = trajet;
+	public void setIdTrajet(int trajet) {
+		this.idTrajet = trajet;
+	}
+	
+	public String toString()
+	{
+		return "Offre - id : "+id+" libelle : "+libelle+" prix : "+prix+" placesTotales : "+placesTotales+" placesDisponibles : "+placesDisponibles+" id Trajet : "+idTrajet;
 	}
 		
 }

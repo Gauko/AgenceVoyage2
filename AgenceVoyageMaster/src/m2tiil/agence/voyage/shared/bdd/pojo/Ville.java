@@ -11,6 +11,16 @@ public class Ville
 	
 	@Column(name="nom")
 	private String nom;
+	
+	public Ville(int id, String nom) {
+		super();
+		this.id = id;
+		this.nom = nom;
+	}
+
+	public Ville() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -26,5 +36,10 @@ public class Ville
 
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+	
+	public String toString()
+	{
+		return "Ville - id : "+id+" nom : "+nom;
 	}
 }
