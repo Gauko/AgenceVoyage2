@@ -14,6 +14,9 @@ public class Research extends Composite {
 
 	public Research() {
 		initWidget(binder.createAndBindUi(this));
+		System.err.println("toto");
 	}
+	
+	
 
 }

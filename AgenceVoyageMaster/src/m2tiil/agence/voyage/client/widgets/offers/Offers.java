@@ -80,7 +80,7 @@ public class Offers extends Composite {
 		
 		final SimplePager pager = new SimplePager();
 		pager.setDisplay(table);
-		
+		System.err.println("toto");
 		
 	}
 		
