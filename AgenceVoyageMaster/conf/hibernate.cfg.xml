@@ -21,13 +21,13 @@
     <property name="hibernate.format_sql">true</property>
 
     <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
-   	<mapping class="agencevoyage.pojo.Offre"/>
-   	<mapping class="agencevoyage.pojo.Trajet"/>
-   	<mapping class="agencevoyage.pojo.Ville"/>
-   	<mapping class="agencevoyage.pojo.MoyenDeTransport"/>
-   	<mapping class="agencevoyage.pojo.Type"/>
-   	<mapping class="agencevoyage.pojo.Societe"/>
-   	<mapping class="agencevoyage.pojo.Utilisateur"/>
-   	<mapping class="agencevoyage.pojo.Reservation"/>
+   	<mapping class="m2tiil.agence.voyage.shared.bdd.pojo.Offre"/>
+   	<mapping class="m2tiil.agence.voyage.shared.bdd.pojo.Trajet"/>
+   	<mapping class="m2tiil.agence.voyage.shared.bdd.pojo.Ville"/>
+   	<mapping class="m2tiil.agence.voyage.shared.bdd.pojo.MoyenDeTransport"/>
+   	<mapping class="m2tiil.agence.voyage.shared.bdd.pojo.Type"/>
+   	<mapping class="m2tiil.agence.voyage.shared.bdd.pojo.Societe"/>
+   	<mapping class="m2tiil.agence.voyage.shared.bdd.pojo.Utilisateur"/>
+   	<mapping class="m2tiil.agence.voyage.shared.bdd.pojo.Reservation"/>
    </session-factory>
 </hibernate-configuration> 
