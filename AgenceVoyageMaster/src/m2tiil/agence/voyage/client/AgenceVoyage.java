@@ -1,22 +1,12 @@
 package m2tiil.agence.voyage.client;
 
 import m2tiil.agence.voyage.client.widgets.connection.Connection;
-import m2tiil.agence.voyage.shared.FieldVerifier;
+import m2tiil.agence.voyage.client.widgets.offers.Offers;
+import m2tiil.agence.voyage.client.widgets.research.Research;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
@@ -43,6 +33,8 @@ public class AgenceVoyage implements EntryPoint {
 	public void onModuleLoad() {
 		VerticalPanel vpanel = new VerticalPanel();
 		vpanel.add(new Connection());
+		vpanel.add(new Research());
+		vpanel.add(new Offers());
 		RootPanel.get("page1").add(vpanel);
 	}
 }

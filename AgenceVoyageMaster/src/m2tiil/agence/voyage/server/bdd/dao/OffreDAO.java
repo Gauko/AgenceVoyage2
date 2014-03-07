@@ -35,7 +35,7 @@ public class OffreDAO
 			
 			offres.add(o);
 			
-			//System.out.println(o.toString());
+//			System.out.println(o.toString());
 		}
 
 		tx.commit();

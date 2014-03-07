@@ -10,31 +10,5 @@
 			<g:PasswordTextBox ui:field='paswd' width="262px" />
 		</g:HorizontalPanel>
 		<g:Button text="Valider" ui:field='connect' width="69px" />
-		<g:TabPanel width="429px" height="337px">
-			<g:Tab text="New tab">
-				<g:VerticalPanel width="5cm" height="3cm">
-					<g:HorizontalPanel width="402px" height="25px">
-						<g:RadioButton name="new name" text="Aller-Simple" width="190px" height="35px"/>
-						<g:RadioButton name="Aller-Retour" height="20px" width="197px">Aller-Retour</g:RadioButton>
-					</g:HorizontalPanel>
-					<g:HorizontalPanel width="405px">
-			<g:ListBox width="202px"/>
-			<g:ListBox width="198px"/>
-		</g:HorizontalPanel>
-					<g:HorizontalPanel>
-						<p1:DatePicker/>
-						<p1:DatePicker width="213px"/>
-					</g:HorizontalPanel>
-					<g:HorizontalPanel>
-						<g:CheckBox text="New CheckBox" width="401px"/>
-					</g:HorizontalPanel>
-					<g:HorizontalPanel width="401px">
-						<g:ListBox width="143px"/>
-						<g:ListBox width="161px"/>
-						<g:Button width="94px"/>
-					</g:HorizontalPanel>
-				</g:VerticalPanel>
-			</g:Tab>
-		</g:TabPanel>
 	</g:FlowPanel>
 </ui:UiBinder>
