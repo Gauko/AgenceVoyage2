@@ -15,7 +15,7 @@ public class TypeDAO
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("select new agencevoyage.pojo.Type(t.id, t.libelle) from Type t");
+		Query select = s.createQuery("select new "+HibernateUtil.locatePojo+".Type(t.id, t.libelle) from Type t");
 		
 		ArrayList<Type> Types = new ArrayList<Type>();
 		

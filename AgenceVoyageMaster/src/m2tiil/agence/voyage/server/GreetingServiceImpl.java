@@ -18,6 +18,7 @@ import m2tiil.agence.voyage.server.bdd.dao.VilleDAO;
 import m2tiil.agence.voyage.shared.ConnectionException;
 import m2tiil.agence.voyage.shared.FieldVerifier;
 import m2tiil.agence.voyage.shared.bdd.pojo.Offre;
+import m2tiil.agence.voyage.shared.bdd.pojo.Trajet;
 import m2tiil.agence.voyage.shared.bdd.pojo.Type;
 import m2tiil.agence.voyage.shared.bdd.pojo.Utilisateur;
 
@@ -32,18 +33,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
 	
-	UtilisateurDAO userDao = new UtilisateurDAO();
-	TypeDAO typeDao = new TypeDAO();
-	MoyenDeTransportDAO moyenDeTransportDao = new MoyenDeTransportDAO();
-	OffreDAO offreDao = new OffreDAO();
-	ReservationDAO reservationDao = new ReservationDAO();
-	SocieteDAO societeDao = new SocieteDAO();
-	TrajetDAO trajetDao = new TrajetDAO();
-	VilleDAO villeDao = new VilleDAO();
+	private UtilisateurDAO userDao = new UtilisateurDAO();
+	private TypeDAO typeDao = new TypeDAO();
+	private MoyenDeTransportDAO moyenDeTransportDao = new MoyenDeTransportDAO();
+	private OffreDAO offreDao = new OffreDAO();
+	private ReservationDAO reservationDao = new ReservationDAO();
+	private SocieteDAO societeDao = new SocieteDAO();
+	private TrajetDAO trajetDao = new TrajetDAO();
+	private VilleDAO villeDao = new VilleDAO();
 	
 	
 	
-	HashMap<String,List<String>> listCriteres = new HashMap<String,List<String>>();
+	private HashMap<String,List<String>> listCriteres = new HashMap<String,List<String>>();
 	{
 		listCriteres.put("date aller", new ArrayList<String>());
 		listCriteres.get("date aller").add("<");
@@ -113,12 +114,16 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// variables
-	public Integer timeout = 20000;
-	public Integer nbTentative = 20000;
+	private  Integer timeout = 20000;
+	private  Integer nbTentative = 20000;
 	
-	public Hashtable<String,Date> listTokens = new Hashtable<String,Date>();
+	private  Hashtable<String,Date> listTokens = new Hashtable<String,Date>();
 	
-	// helpers
+	/**
+	 * Methode de verification du token de connexion
+	 * @param token
+	 * @throws ConnectionException
+	 */
 	private void verifToken(String token) throws ConnectionException{
 		Date now = new Date();
 		Date tokenTimeOut = listTokens.get(token);
@@ -133,6 +138,14 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	
 	
 	//// interface
+	/**
+	 * Permet de se connecter en tant qu'utilisateur. Fournit un token de connection qui sera demandé pour chacunes
+	 * des autres actions. 
+	 * @param userMail
+	 * @param password
+	 * @return
+	 * @throws ConnectionException
+	 */
 	public String login(String userMail, String password) throws ConnectionException{
 		String token = "defaultToken";
 		int i = 0;
@@ -171,6 +184,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
+	
+	/** 
+	 * Crée un nouvel utilisateur
+	 * @param nom
+	 * @param prenom
+	 * @param password
+	 * @param mail
+	 * @throws Exception
+	 */
 	public void registerNewUser(String nom, String prenom, String password, String mail) throws Exception{
 		Utilisateur user = new Utilisateur();
 		user.setMail(mail);
@@ -178,7 +200,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		user.setPrenom(prenom);
 		user.setPassword(password);
 		
-		//check doublon
+		//TODO check doublon
 		for(Utilisateur u : userDao.selectAll()){
 			if(u.getMail().equals(user.getMail())){
 				throw new Exception("This email is already used !");
@@ -189,6 +211,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		
 	}
 	
+	
+	
+	
+	/**
+	 * Retourne la liste des type de transport disponible
+	 * @param token
+	 * @return
+	 * @throws ConnectionException
+	 */
 	public List<Type> getTypeTransport(String token) throws ConnectionException{
 		verifToken(token);
 		
@@ -197,33 +228,91 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return l;
 	}
 	
-	
-	public HashMap<String,String> getCritere(String token) throws ConnectionException{
+	/**
+	 * Retourne la liste des critères de recherche
+	 * @param token
+	 * @return
+	 * @throws ConnectionException
+	 */
+	public HashMap<String,List<String>> getCritere(String token) throws ConnectionException{
 		verifToken(token);
 		
 		
-		return null;
+		return listCriteres;
 	}
 	
+	
+	/**
+	 * Obtenir les offres du jour
+	 * @param token
+	 * @return
+	 * @throws ConnectionException
+	 */
 	public List<Offre> getOffreDuJour(String token) throws ConnectionException{
 		verifToken(token);
 		
 		List<Offre> l = offreDao.selectAll();
 		List<Offre> l2 = new ArrayList<Offre>();
 		for(Offre o : l){
-			//if(o.getDate() == datedujour)
+//			if(o.getDate() == datedujour)
+			
+			
 		}
 		
-		return null;
+		return l2;
 	}
 	
-	public List<Offre> rechercheOffre(String token, HashMap<String,String> critereValeur) throws ConnectionException{
+	
+	
+	/**
+	 * Retourne la liste des trajets correspondant aux critères fournis.
+	 * @param token
+	 * @param critereValeur
+	 * @return
+	 * @throws ConnectionException
+	 */
+	public List<Trajet> rechercheTrajet(String token, HashMap<String,String> critereValeur) throws ConnectionException{
 		verifToken(token);
+		List<Trajet> l = trajetDao.selectAll();
+		List<Trajet> l2 = new ArrayList<Trajet>();
+		boolean keep = true;
+		
+		for(Trajet t : l){
+			if(critereValeur.get("date aller") != null){
+				String c = critereValeur.get("date aller");
+				if(c.equals("<")){
+					//
+				}else if(c.equals(">")){
+					//
+				}else if(c.equals("=")){
+					//
+				}else{
+					keep = false;
+				}
+				
+			}else if(critereValeur.get("date retour") != null){
+				
+			}
+			
+			if(keep){
+				l2.add(t);
+			}
+		}
 		
 		
-		return null;
+		return l2;
 	}
 	
+	
+	/**
+	 * Effectue une réservation
+	 * @param token
+	 * @param user
+	 * @param panier
+	 * @param carteBanquaire
+	 * @return
+	 * @throws ConnectionException
+	 */
 	public Object doReservation(String token, String user, Object panier, Object carteBanquaire) throws ConnectionException{
 		verifToken(token);
 		
@@ -232,6 +321,27 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
+	
+	
+	
+	/**
+	 * main test
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		GreetingServiceImpl a = new GreetingServiceImpl();
+		
+		
+		try {
+			a.login("toto", "toto");
+		} catch (ConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		for(String s : a.getCritere(null)){
+//			
+//		}
+	}
 	
 	
 }

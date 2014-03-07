@@ -15,7 +15,7 @@ public class UtilisateurDAO
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("select new agencevoyage.pojo.Utilisateur(u.id, u.nom, u.prenom, u.mail, u.password) from Utilisateur u");
+		Query select = s.createQuery("select new "+HibernateUtil.locatePojo+".Utilisateur(u.id, u.nom, u.prenom, u.mail, u.password) from Utilisateur u");
 		
 		ArrayList<Utilisateur> Utilisateurs = new ArrayList<Utilisateur>();
 		

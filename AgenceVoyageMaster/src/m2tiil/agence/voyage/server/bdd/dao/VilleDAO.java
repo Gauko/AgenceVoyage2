@@ -15,7 +15,7 @@ public class VilleDAO
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = s.beginTransaction();
 		
-		Query select = s.createQuery("select new agencevoyage.pojo.Ville(v.id, v.nom) from Ville v");
+		Query select = s.createQuery("select new "+HibernateUtil.locatePojo+".Ville(v.id, v.nom) from Ville v");
 		
 		ArrayList<Ville> Villes = new ArrayList<Ville>();
 		
