@@ -36,5 +36,6 @@ public class AgenceVoyage implements EntryPoint {
 		vpanel.add(new Research());
 		vpanel.add(new Offers());
 		RootPanel.get("page1").add(vpanel);
+		
 	}
 }

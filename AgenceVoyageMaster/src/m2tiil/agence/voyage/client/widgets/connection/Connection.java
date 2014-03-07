@@ -37,6 +37,9 @@ public class Connection extends Composite {
 	protected void loginTextNotNull(ClickEvent event){
 		if(login.getText().length() == 0){
 			Window.alert("toto");
+			
+			
+			
 		}
 	}
 }

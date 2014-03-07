@@ -82,6 +82,7 @@ public class Offers extends Composite {
 		pager.setDisplay(table);
 		System.err.println("toto");
 		
+		
 	}
 		
 }
