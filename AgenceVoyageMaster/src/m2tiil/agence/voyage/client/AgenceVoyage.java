@@ -1,6 +1,7 @@
 package m2tiil.agence.voyage.client;
 
 import m2tiil.agence.voyage.client.widgets.connection.Connection;
+import m2tiil.agence.voyage.client.widgets.tableoffres.TableOffres;
 import m2tiil.agence.voyage.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -43,6 +44,7 @@ public class AgenceVoyage implements EntryPoint {
 	public void onModuleLoad() {
 		VerticalPanel vpanel = new VerticalPanel();
 		vpanel.add(new Connection());
+		vpanel.add(new TableOffres());
 		RootPanel.get("page1").add(vpanel);
 	}
 }
