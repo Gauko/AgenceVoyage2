@@ -1,5 +1,7 @@
 package m2tiil.agence.voyage.client.widgets.tableoffres;
 
+import java.util.ArrayList;
+
 import m2tiil.agence.voyage.server.bdd.dao.OffreDAO;
 import m2tiil.agence.voyage.shared.bdd.pojo.Offre;
 
@@ -70,7 +72,8 @@ public class TableOffres extends Composite {
 		cellTable.addColumn(checkColumn);
 		cellTable.addColumn(titleCollumn, "Tweet");
 		cellTable.addColumn(priceColumn, "Date");
-		listOffers.setList(OffreDAO.selectAll());
+		ArrayList<Offre> tmp = OffreDAO.selectAll();
+		listOffers.setList(tmp);
 		listOffers.addDataDisplay(cellTable);
 
 		final SimplePager pager = new SimplePager();
